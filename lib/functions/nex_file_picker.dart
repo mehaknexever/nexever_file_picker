@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -13,7 +13,7 @@ import '../state/nex_file_picker_state.dart';
 /// A helper class for picking files, images, and videos, with options for cropping and compression.
 class FilePickerHelper {
   final picker = ImagePicker();
-  BuildContext context = Get.context!;
+  // BuildContext context = Get.context!;
   CropAspectRatioPreset? cropAspectRatioPreset;
   late NexFilePickerState callback;
 
@@ -58,7 +58,7 @@ class FilePickerHelper {
   }
 
   /// Opens a bottom sheet to pick an image from the camera or gallery.
-  void openImagePicker() {
+/*  void openImagePicker() {
     showModalBottomSheet(
       context: context,
       useRootNavigator: false,
@@ -200,7 +200,7 @@ class FilePickerHelper {
         },
       ),
     );
-  }
+  }*/
 
   /// Picks an image from the given source and crops it if cropping is enabled.
   ///
