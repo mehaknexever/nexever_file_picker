@@ -29,7 +29,25 @@ TODO: Include short and useful examples for package users. Add longer examples
 to `/example` folder.
 
 ```dart
-const like = 'sample';
+class ProfileController implements NexFilePickerState{
+  File profileImage = "";
+  @override
+  void error(error) {
+    print('Error => $error');
+  }
+
+  @override
+  void success(File file, String type) {
+    if(type == "profile"){
+      profileImage = file;
+    }
+  }
+
+  pickImage(){
+    FilePickerHelper(this).getVideo("profile");
+  }
+
+}
 ```
 
 ## Additional information

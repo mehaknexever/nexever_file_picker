@@ -32,7 +32,7 @@ class FilePickerHelper {
   /// Opens a dialog to pick a file with specific extensions.
   ///
   /// [type] is a list of allowed file extensions. If not provided, defaults to common document extensions.
-  void openAttachmentDialog({List<String>? type}) async {
+  void openAttachmentDialog({List<String>? type,required String fileType}) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions:
@@ -50,7 +50,7 @@ class FilePickerHelper {
           fileExtension: getFileExtension(file.path),
           size: sizeMb,
         ),
-        type: "document",
+        type: fileType,
       );
     } else {
       callback.error('No file selected.');
@@ -205,7 +205,7 @@ class FilePickerHelper {
   /// Picks an image from the given source and crops it if cropping is enabled.
   ///
   /// [imageSource] specifies whether the image is from the camera or gallery.
-  Future<void> getImageWithCropping(ImageSource imageSource) async {
+  Future<void> getImageWithCropping(ImageSource imageSource , String type) async {
     XFile? imageFile = await picker.pickImage(source: imageSource);
     if (imageFile != null) {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
@@ -225,9 +225,9 @@ class FilePickerHelper {
         ],
       );
       if (croppedFile != null) {
-        getImageCompressed(XFile(croppedFile.path));
+        getImageCompressed(XFile(croppedFile.path), type);
       } else {
-        getImageCompressed(imageFile);
+        getImageCompressed(imageFile, type);
       }
     } else {
       callback.error('No Image Selected');
@@ -235,11 +235,11 @@ class FilePickerHelper {
   }
 
   /// Picks a video and compresses it if necessary.
-  Future<void> getVideo() async {
+  Future<void> getVideo(String type) async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.video);
     if (result != null) {
-      getVideoCompressed(XFile(result.files.single.path ?? ""));
+      getVideoCompressed(XFile(result.files.single.path ?? ""),type);
     } else {
       callback.error('No Video Selected');
     }
@@ -248,10 +248,10 @@ class FilePickerHelper {
   /// Picks an image from the given source without cropping.
   ///
   /// [imageSource] specifies whether the image is from the camera or gallery.
-  Future<void> getImageWithoutCropping(ImageSource imageSource) async {
+  Future<void> getImageWithoutCropping(ImageSource imageSource, String type) async {
     XFile? imageFile = await picker.pickImage(source: imageSource);
     if (imageFile != null) {
-      getImageCompressed(imageFile);
+      getImageCompressed(imageFile, type);
     } else {
       callback.error('No Image Selected');
     }
@@ -260,7 +260,7 @@ class FilePickerHelper {
   /// Compresses the given image file.
   ///
   /// [imageFile] is the image file to be compressed.
-  Future<void> getImageCompressed(XFile imageFile) async {
+  Future<void> getImageCompressed(XFile imageFile, String type) async {
     final filePath = imageFile.path;
     var imgExtension = filePath.split(".").last;
     final splitted = filePath.split(".").first;
@@ -287,7 +287,7 @@ class FilePickerHelper {
           fileExtension: getFileExtension(imageCompressed.path),
           size: sizeMb,
         ),
-        type: "image",
+        type: type,
       );
     } else {
       callback.error('Image compression failed');
@@ -297,7 +297,7 @@ class FilePickerHelper {
   /// Compresses the given video file.
   ///
   /// [imageFile] is the video file to be compressed.
-  Future<void> getVideoCompressed(XFile imageFile) async {
+  Future<void> getVideoCompressed(XFile imageFile, String type) async {
     File file = File(imageFile.path);
     int sizeBytes = file.lengthSync();
     double sizeMb = sizeBytes / (1024 * 1024);
@@ -310,7 +310,7 @@ class FilePickerHelper {
           fileExtension: getFileExtension(imageFile.path),
           size: sizeMb,
         ),
-        type: "video",
+        type: type,
       );
       return;
     }
@@ -334,7 +334,7 @@ class FilePickerHelper {
           fileExtension: getFileExtension(compressedFile.path),
           size: compressedSizeMb,
         ),
-        type: "video",
+        type: type,
       );
     } else {
       callback.error('Video compression failed');
