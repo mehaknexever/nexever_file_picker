@@ -2,18 +2,15 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-// import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:video_compress/video_compress.dart';
 import '../model/return_model.dart';
 import '../state/nex_file_picker_state.dart';
 
 /// A helper class for picking files, images, and videos, with options for cropping and compression.
 class FilePickerHelper {
   final picker = ImagePicker();
-  // BuildContext context = Get.context!;
   CropAspectRatioPreset? cropAspectRatioPreset;
   late NexFilePickerState callback;
 
@@ -315,15 +312,15 @@ class FilePickerHelper {
       return;
     }
 
-    final info = await VideoCompress.compressVideo(
-      file.path,
-      quality: VideoQuality.Res960x540Quality,
-      deleteOrigin: false,
-      includeAudio: true,
-    );
+    // final info = await VideoCompress.compressVideo(
+    //   file.path,
+    //   quality: VideoQuality.Res960x540Quality,
+    //   deleteOrigin: false,
+    //   includeAudio: true,
+    // );
 
-    if (info != null) {
-      File compressedFile = File(info.path ?? "");
+    if (imageFile != null) {
+      File compressedFile = File(imageFile.path ?? "");
       int compressedSizeBytes = compressedFile.lengthSync();
       double compressedSizeMb = compressedSizeBytes / (1024 * 1024);
 

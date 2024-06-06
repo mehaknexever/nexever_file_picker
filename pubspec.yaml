@@ -15,8 +15,6 @@ dependencies:
   flutter_image_compress: ^2.0.3
   permission_handler: ^11.0.1
   image_cropper:
-  video_compress:
-    path: "video_compress"
 
 
 
